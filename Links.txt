@@ -1,0 +1,12 @@
+simulador Online FCFS, SSTF, ELEVADOR:
+http://lasdpc.icmc.usp.br/~ssc640/grad/ec2015/scheduling_simulator/simulator.html
+
+https://www.geeksforgeeks.org/program-for-sstf-disk-scheduling-algorithm/
+
+
+
+1- Pesquisar bonitinho como o algoritmo funciona.
+2- fazer um algoritmo que simula ele funcionando.
+3- Simulação do tempo.
+4- Comparar os algoritmos e simulação do tempo.
+5- Conclusão.

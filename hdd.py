@@ -72,8 +72,8 @@ class Disk:
         else:
             self.fairWindow = -1
 
-        print 'REQUESTS', self.requests
-        print ''
+        print ('REQUESTS', self.requests)
+        print ('')
 
         # for late requests
         self.lateCount = 0
@@ -695,8 +695,8 @@ class Disk:
         xferTime  = self.timer     - self.xferBegin
         totalTime = self.timer     - self.seekBegin
 
-        if self.compute == True:
-            print 'Block: %3d  Seek:%3d  Rotate:%3d  Transfer:%3d  Total:%4d' % (self.currentBlock, seekTime, rotTime, xferTime, totalTime)
+        #if self.compute == True:
+            #print 'Block: %3d  Seek:%3d  Rotate:%3d  Transfer:%3d  Total:%4d' % (self.currentBlock, seekTime, rotTime, xferTime, totalTime)
 
         # if int(totalTime) != int(self.totalEst):
         #     print 'INTERNAL ERROR: estimate was', self.totalEst, 'whereas actual time to access block was', totalTime
@@ -759,10 +759,14 @@ if options.graphics and options.compute == False:
     print '\nWARNING: Setting compute flag to True, as graphics are on\n'
     options.compute = True
 
-# set up simulator info
-d = Disk(addr='1,5,60,5', addrDesc=options.addrDesc, lateAddr=options.lateAddr, lateAddrDesc=options.lateAddrDesc,
-        policy=options.policy, seekSpeed=float(options.seekSpeed), rotateSpeed=float(options.rotateSpeed),
-        skew=options.skew, window=options.window, compute=True, graphics=options.graphics, zoning=options.zoning)
+def start(req):
+    # set up simulator info
+    d = Disk(addr=req, addrDesc=options.addrDesc, lateAddr=options.lateAddr, lateAddrDesc=options.lateAddrDesc,
+            policy=options.policy, seekSpeed=float(options.seekSpeed), rotateSpeed=float(options.rotateSpeed),
+            skew=options.skew, window=options.window, compute=True, graphics=options.graphics, zoning=options.zoning)
 
-# run simulation
-d.Go()
+
+    # run simulation
+    d.Go()
+
+start('12,50')

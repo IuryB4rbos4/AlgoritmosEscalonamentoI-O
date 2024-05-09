@@ -1,6 +1,5 @@
 import random
 import hdd
-
 class Requisicoes:
 
     def __init__(self):
@@ -29,20 +28,7 @@ class Requisicoes:
         
         return result
 
-class Simalate():
-    req = Requisicoes()
+#hdd.d.Go()
 
-    for i in range(5):
-        d = Disk(addr='1,5,60,5', addrDesc=options.addrDesc, lateAddr=options.lateAddr, lateAddrDesc=options.lateAddrDesc,
-        policy=options.policy, seekSpeed=float(options.seekSpeed), rotateSpeed=float(options.rotateSpeed),
-        skew=options.skew, window=options.window, compute=True, graphics=options.graphics, zoning=options.zoning)
-
-    
-
-class Main():
-    r = Requisicoes()
-    print(r.lerPorLinhas(0))
-    #r.gravarRequisicoes()
-
-if __name__ == "__main__":
-    main = Main()  # Crie uma instância da classe Main
+req = Requisicoes()
+hdd.start(req.lerPorLinhas(4))

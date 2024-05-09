@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 from Tkinter import *
+#import 
 from types import *
 import math, random, time, sys, os
 from optparse import OptionParser
@@ -78,14 +79,14 @@ class Disk:
         # for late requests
         self.lateCount = 0
         if len(self.lateRequests) > 0:
-            print 'LATE REQUESTS', self.lateRequests
-            print ''
+            print ('LATE REQUESTS', self.lateRequests)
+            print ('')
 
         if self.compute == False:
-            print ''
-            print 'For the requests above, compute the seek, rotate, and transfer times.'
-            print 'Use -c or the graphical mode (-G) to see the answers.'
-            print ''
+            print ('')
+            print ('For the requests above, compute the seek, rotate, and transfer times.')
+            print ('Use -c or the graphical mode (-G) to see the answers.')
+            print ('')
 
         # BINDINGS
         if self.graphics:
@@ -103,20 +104,20 @@ class Disk:
         self.tracks[4] = self.tracks[3] - self.trackWidth
 
         if (self.seekSpeed > 1 and self.trackWidth % self.seekSpeed != 0):
-            print 'Seek speed (%d) must divide evenly into track width (%d)' % (self.seekSpeed, self.trackWidth)
+            print ('Seek speed (%d) must divide evenly into track width (%d)' % (self.seekSpeed, self.trackWidth))
             sys.exit(1)
         if self.seekSpeed < 1:
             x = (self.trackWidth / self.seekSpeed)
             y = int(float(self.trackWidth) / float(self.seekSpeed))
             if float(x) != float(y):
-                print 'Seek speed (%d) must divide evenly into track width (%d)' % (self.seekSpeed, self.trackWidth)
+                print ('Seek speed (%d) must divide evenly into track width (%d)' % (self.seekSpeed, self.trackWidth))
                 sys.exit(1)
 
         # DISK SURFACE
         self.cx = self.width/2.0
         self.cy = self.width/2.0
-        #if self.graphics:
-            #self.canvas.create_rectangle(self.cx-175, 30, self.cx - 20, 80, fill='gray', outline='black')
+        if self.graphics:
+            self.canvas.create_rectangle(self.cx-175, 30, self.cx - 20, 80, fill='gray', outline='black')
         self.platterSize = 320
         ps2 = self.platterSize / 2.0
         if self.graphics:
@@ -217,9 +218,9 @@ class Disk:
             self.rotID  = self.canvas.create_text(200, 10, text='Rotate: 0.00', anchor='w')
             self.canvas.create_rectangle(295,0,400,18, fill='green', outline='green')
             self.xferID = self.canvas.create_text(300, 10, text='Transfer: 0.00', anchor='w')
-            #self.canvas.create_text(320, 40, text='"s" to start', anchor='w')
-            #self.canvas.create_text(320, 60, text='"p" to pause', anchor='w')
-            #self.canvas.create_text(320, 80, text='"q" to quit', anchor='w')
+            self.canvas.create_text(320, 40, text='"s" to start', anchor='w')
+            self.canvas.create_text(320, 60, text='"p" to pause', anchor='w')
+            self.canvas.create_text(320, 80, text='"q" to quit', anchor='w')
         self.timer = 0
 
         # STATS
@@ -242,14 +243,15 @@ class Disk:
             self.GetNextIO()
             while self.isDone == False:
                 self.Animate()
+        return [(self.seekTotal + self.rotTotal)/10]
 
     # crappy error message
     def PrintAddrDescMessage(self, value):
-        print 'Bad address description (%s)' % value
-        print 'The address description must be a comma-separated list of length three, without spaces.'
-        print 'For example, "10,100,0" would indicate that 10 addresses should be generated, with'
-        print '100 as the maximum value, and 0 as the minumum. A max of -1 means just use the highest'
-        print 'possible value as the max address to generate.'
+        print ('Bad address description (%s)' % value)
+        print ('The address description must be a comma-separated list of length three, without spaces.')
+        print ('For example, "10,100,0" would indicate that 10 addresses should be generated, with')
+        print ('100 as the maximum value, and 0 as the minumum. A max of -1 means just use the highest')
+        print ('possible value as the max address to generate.')
         sys.exit(1)
     
     #
@@ -403,8 +405,8 @@ class Disk:
             (col, row) = self.QueueMap(index)
             sizeHalf   = self.queueBoxSize / 2.0
             (cx, cy)   = (self.queueX + (col * self.queueBoxSize), self.queueY + (row * self.queueBoxSize))
-            #self.queueBoxID[index] = self.canvas.create_rectangle(cx - sizeHalf, cy - sizeHalf, cx + sizeHalf, cy + sizeHalf, fill='white')
-            #self.queueTxtID[index] = self.canvas.create_text(cx, cy, anchor='center', text=str(block))
+            self.queueBoxID[index] = self.canvas.create_rectangle(cx - sizeHalf, cy - sizeHalf, cx + sizeHalf, cy + sizeHalf, fill='white')
+            self.queueTxtID[index] = self.canvas.create_text(cx, cy, anchor='center', text=str(block))
     
     def SwitchColors(self, c):
         if self.graphics:
@@ -616,7 +618,7 @@ class Disk:
             # then, do SATF on those blocks (otherwise, will not do them in obvious order)
             (self.currentBlock, self.currentIndex) = self.DoSATF(trackList)
         else:
-            print 'policy (%s) not implemented' % self.policy
+            print ('policy (%s) not implemented' % self.policy)
             sys.exit(1)
 
         # once best block is decided, go ahead and do the seek
@@ -711,7 +713,7 @@ class Disk:
 
     def PrintStats(self):
         if self.compute == True:
-            print '\nTOTALS      Seek:%3d  Rotate:%3d  Transfer:%3d  Total:%4d\n' % (self.seekTotal, self.rotTotal, self.xferTotal, self.timer)
+            print ('\nTOTALS      Seek:%3d  Rotate:%3d  Transfer:%3d  Total:%4d\n' % (self.seekTotal, self.rotTotal, self.xferTotal, self.timer))
         
 # END: class Disk
 
@@ -724,8 +726,8 @@ parser = OptionParser()
 parser.add_option('-s', '--seed',            default='0',         help='Random seed',                                             action='store', type='int',    dest='seed')
 parser.add_option('-a', '--addr',            default='-1',        help='Request list (comma-separated) [-1 -> use addrDesc]',     action='store', type='string', dest='addr')
 parser.add_option('-A', '--addrDesc',        default='5,-1,0',    help='Num requests, max request (-1->all), min request',        action='store', type='string', dest='addrDesc')
-parser.add_option('-S', '--seekSpeed',       default='1',         help='Speed of seek',                                           action='store', type='string', dest='seekSpeed')
-parser.add_option('-R', '--rotSpeed',        default='1',         help='Speed of rotation',                                       action='store', type='string', dest='rotateSpeed')
+parser.add_option('-S', '--seekSpeed',       default='2',         help='Speed of seek',                                           action='store', type='string', dest='seekSpeed')
+parser.add_option('-R', '--rotSpeed',        default='4.2',         help='Speed of rotation',                                       action='store', type='string', dest='rotateSpeed')
 parser.add_option('-p', '--policy',          default='FIFO',      help='Scheduling policy (FIFO, SSTF, SATF, BSATF)',             action='store', type='string', dest='policy')
 parser.add_option('-w', '--schedWindow',     default=-1,          help='Size of scheduling window (-1 -> all)',                   action='store', type='int',    dest='window')
 parser.add_option('-o', '--skewOffset',      default=0,           help='Amount of skew (in blocks)',                              action='store', type='int',    dest='skew')
@@ -736,27 +738,27 @@ parser.add_option('-L', '--lateAddrDesc',    default='0,-1,0',    help='Num requ
 parser.add_option('-c', '--compute',         default=False,       help='Compute the answers',                                     action='store_true',           dest='compute')
 (options, args) = parser.parse_args()
 
-print 'OPTIONS seed', options.seed
-print 'OPTIONS addr', options.addr
-print 'OPTIONS addrDesc', options.addrDesc
-print 'OPTIONS seekSpeed', options.seekSpeed
-print 'OPTIONS rotateSpeed', options.rotateSpeed
-print 'OPTIONS skew', options.skew
-print 'OPTIONS window', options.window
-print 'OPTIONS policy', options.policy
-print 'OPTIONS compute', options.compute
-print 'OPTIONS graphics', options.graphics
-print 'OPTIONS zoning', options.zoning
-print 'OPTIONS lateAddr', options.lateAddr
-print 'OPTIONS lateAddrDesc', options.lateAddrDesc
-print ''
+print ('OPTIONS seed', options.seed)
+print ('OPTIONS addr', options.addr)
+print ('OPTIONS addrDesc', options.addrDesc)
+print ('OPTIONS seekSpeed', options.seekSpeed)
+print ('OPTIONS rotateSpeed', options.rotateSpeed)
+print ('OPTIONS skew', options.skew)
+print ('OPTIONS window', options.window)
+print ('OPTIONS policy', options.policy)
+print ('OPTIONS compute', options.compute)
+print ('OPTIONS graphics', options.graphics)
+print ('OPTIONS zoning', options.zoning)
+print ('OPTIONS lateAddr', options.lateAddr)
+print ('OPTIONS lateAddrDesc', options.lateAddrDesc)
+print ('')
 
 if options.window == 0:
-    print 'Scheduling window (%d) must be positive or -1 (which means a full window)' % options.window
+    print ('Scheduling window (%d) must be positive or -1 (which means a full window)' % options.window)
     sys.exit(1)
 
 if options.graphics and options.compute == False:
-    print '\nWARNING: Setting compute flag to True, as graphics are on\n'
+    print ('\nWARNING: Setting compute flag to True, as graphics are on\n')
     options.compute = True
 
 def start(req):
@@ -767,6 +769,8 @@ def start(req):
 
 
     # run simulation
-    d.Go()
+    out = d.Go()
+    return out
 
-start('12,50')
+
+#start('19')

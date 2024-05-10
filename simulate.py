@@ -2,6 +2,8 @@ import random
 import hdd
 import csv
 import time
+#from Algoritmos import SSTF
+import SSTF
 
 class Requisicoes:
 
@@ -39,6 +41,7 @@ class ArmazenaDados:
     
     def __init__(self):
         self.data = [[]]
+        self.data.append(['Entrada', 'Tempo'])
 
     def armazenaDados(self,entrada, lista):
         novaLista = []
@@ -46,8 +49,9 @@ class ArmazenaDados:
         novaLista.append(lista)
         self.data.append(novaLista)
 
-    def gravar(self):
-        with open('Dados/FIFO.csv', mode='w') as file:
+    def gravar(self, algorithm):
+        end = 'Dados/'+algorithm+'.csv'
+        with open(end, mode='w') as file:
             write = csv.writer(file)
             write.writerows(self.data)
 
@@ -61,17 +65,30 @@ class Analize:
         inicio = time.time()
         for i in range(0,99):
             self.data.armazenaDados(self.env.lengthReq(self.env.lerPorLinhas(i)), hdd.start(self.env.lerPorLinhas(i)))
-        self.data.gravar()
+        self.data.gravar('FIFO')
         fim = time.time()
         print(fim)
+
+    def runSSTF(self):
+        for i in range(0,99):
+            lista = list(map(int, self.env.lerPorLinhas(i).split(',')))
+            self.data.armazenaDados(self.env.lengthReq(self.env.lerPorLinhas(i)), hdd.start(SSTF.run(18, lista)))
+        self.data.gravar('SSTF')
+        #for i in range(0,99):
+            
+           # self.data.armazenaDados(self.env.lengthReq(self.env.lerPorLinhas(i)), hdd.start(self.env.lerPorLinhas(i)))
+
 
 
 
 
 req = Requisicoes()
-analize = ArmazenaDados()
+analize1 = ArmazenaDados()
+analize2 = ArmazenaDados()
 
-run = Analize(req, analize)
-run.runFIFO()
+run1 = Analize(req, analize1)
+run2 = Analize(req, analize2)
+run1.runFIFO()
+run2.runSSTF()
 
 

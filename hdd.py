@@ -243,7 +243,7 @@ class Disk:
             self.GetNextIO()
             while self.isDone == False:
                 self.Animate()
-        return [(self.seekTotal + self.rotTotal)/10]
+        return int((self.seekTotal + self.rotTotal)/10)
 
     # crappy error message
     def PrintAddrDescMessage(self, value):
@@ -727,7 +727,7 @@ parser.add_option('-s', '--seed',            default='0',         help='Random s
 parser.add_option('-a', '--addr',            default='-1',        help='Request list (comma-separated) [-1 -> use addrDesc]',     action='store', type='string', dest='addr')
 parser.add_option('-A', '--addrDesc',        default='5,-1,0',    help='Num requests, max request (-1->all), min request',        action='store', type='string', dest='addrDesc')
 parser.add_option('-S', '--seekSpeed',       default='2',         help='Speed of seek',                                           action='store', type='string', dest='seekSpeed')
-parser.add_option('-R', '--rotSpeed',        default='4.2',         help='Speed of rotation',                                       action='store', type='string', dest='rotateSpeed')
+parser.add_option('-R', '--rotSpeed',        default='1.2',         help='Speed of rotation',                                       action='store', type='string', dest='rotateSpeed')
 parser.add_option('-p', '--policy',          default='FIFO',      help='Scheduling policy (FIFO, SSTF, SATF, BSATF)',             action='store', type='string', dest='policy')
 parser.add_option('-w', '--schedWindow',     default=-1,          help='Size of scheduling window (-1 -> all)',                   action='store', type='int',    dest='window')
 parser.add_option('-o', '--skewOffset',      default=0,           help='Amount of skew (in blocks)',                              action='store', type='int',    dest='skew')
@@ -773,4 +773,4 @@ def start(req):
     return out
 
 
-#start('19')
+#start('1, 90, 16, 78, 6, 100')

@@ -23,3 +23,7 @@ Note que não usamos a parte grafica e a implementação não é nossa, então a
 Instale o Thinker atravéz de:
 
 ```pip install Thinker```
+
+E é preciso ter o python-tk:
+
+```sudo apt install python-tk```
